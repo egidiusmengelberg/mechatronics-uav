@@ -7,8 +7,9 @@
 #define CYCLE_TIME_READ_SLOW 100  // ms
 
 // SAFETY
-#define AMPMETER A0
-#define DISCHARGE 2
+#define SAFETY_AMPMETER A0
+#define SAFETY_DISCHARGE 2
+#define SAFETY_AMP_CONSTANT 632
 
 // RELAYS
 #define RELAY_BLOWERS 3
@@ -33,10 +34,10 @@
 #define TOF_DISTANCE_BETWEEN_SENSORS 141 // mm
 
 // SDCARD
-#define SD_DI 50;
-#define SD_DO 51;
-#define SD_SCK 52;
-#define SD_CS 53;
+#define SD_DI 50
+#define SD_DO 51
+#define SD_SCK 52
+#define SD_CS 53
 
 // DISPLAY
 #define DISPLAY_SUPPLY_1 34

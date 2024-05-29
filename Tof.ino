@@ -16,7 +16,7 @@ void tofInit() {
   if(!tof1.begin(TOF_1_ADDR)) {
     Serial.println("Error 2: Failed to boot first ToF");
     displayNumber(2);
-    while(1);
+    while (1) {}
   } 
 
   delay(10);
@@ -26,7 +26,7 @@ void tofInit() {
   if(!tof2.begin(TOF_2_ADDR)) {
     Serial.println("Error 2: Failed to boot second ToF");
     displayNumber(2);
-    while(1);
+    while (1) {}
   }
 
   delay(10);
@@ -36,7 +36,7 @@ void tofInit() {
   if(!tof3.begin(TOF_3_ADDR)) {
     Serial.println("Error 2: Failed to boot third ToF");
     displayNumber(2);
-    while(1);
+    while (1) {}
   }
 }
 

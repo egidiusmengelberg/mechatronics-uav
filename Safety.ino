@@ -3,18 +3,27 @@ void safetyInit() {
   pinMode(SAFETY_DISCHARGE, INPUT_PULLUP);
   
   pinMode(RELAY_ELEC, OUTPUT);
-  
-  attachInterrupt(digitalPinToInterrupt(SAFETY_DISCHARGE), emergency, FALLING);
-
   digitalWrite(RELAY_ELEC, HIGH);
+  
   delay(300);
+  
+  attachInterrupt(digitalPinToInterrupt(SAFETY_DISCHARGE), safetyDischarge, FALLING);
 }
 
-void safety() {
+void safetyDischarge() {
   digitalWrite(RELAY_ELEC, LOW);
   motorBlowerOff();
-  Serial.println("Error 1: Amperage cutoff");
   displayNumber(1);
+  Serial.println("Error 1: Battery cutoff due to voltage");
+  noInterrupts();
+  while (1);
+}
+
+void safetyAmps() {
+  digitalWrite(RELAY_ELEC, LOW);
+  motorBlowerOff();
+  displayNumber(1);
+  Serial.println("Error 1: Battery cutoff due to amperage");
   noInterrupts();
   while (1);
 }

@@ -23,8 +23,6 @@ void gyroInit() {
   gyro.setMagOpMode(AK8963_CONT_MODE_100HZ);
 }
 
-
-
 float gyroRead() {
   xyzFloat gyr = gyro.getGyrValues();
   return gyr.z;

@@ -1,6 +1,6 @@
 #include "config.h"
 
-const uint8_t segment_array[8] = {
+const uint8_t segment_array[8] PROGMEM = {
     DISPLAY_SEGMENT_A, 
     DISPLAY_SEGMENT_B, 
     DISPLAY_SEGMENT_C, 
@@ -33,35 +33,35 @@ void displayNumber(uint8_t number) {
     displaySetAllSegments(0);
     switch(number){
         case 0:
-        displaySetSegments(1,1,1,1,1,1,0);
-        break;
+          displaySetSegments(1,1,1,1,1,1,0);
+          break;
         case 1:
-        displaySetSegments(0,1,1,0,0,0,0);
-        break;
+          displaySetSegments(0,1,1,0,0,0,0);
+          break;
         case 2:
-        displaySetSegments(1,1,0,1,1,0,1);
-        break;
+          displaySetSegments(1,1,0,1,1,0,1);
+          break;
         case 3:
-        displaySetSegments(1,1,1,1,0,0,1);
-        break;
+          displaySetSegments(1,1,1,1,0,0,1);
+          break;
         case 4:
-        displaySetSegments(0,1,1,0,0,1,1);
-        break;
+          displaySetSegments(0,1,1,0,0,1,1);
+          break;
         case 5:
-        displaySetSegments(1,0,1,1,0,1,1);
-        break;
+          displaySetSegments(1,0,1,1,0,1,1);
+          break;
         case 6:
-        displaySetSegments(1,0,1,1,1,1,1);
-        break;
+          displaySetSegments(1,0,1,1,1,1,1);
+          break;
         case 7:
-        displaySetSegments(1,1,1,0,0,0,0);
-        break;
+          displaySetSegments(1,1,1,0,0,0,0);
+          break;
         case 8:
-        displaySetSegments(1,1,1,1,1,1,1);
-        break;
+          displaySetSegments(1,1,1,1,1,1,1);
+          break;
         case 9:
-        displaySetSegments(1,1,1,1,0,1,1);
-        break;
+          displaySetSegments(1,1,1,1,0,1,1);
+          break;
     }
 }
 

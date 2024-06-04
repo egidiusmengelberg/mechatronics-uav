@@ -1,30 +1,5 @@
+#include "Types.h"
 #include "config.h"
-
-enum State {
-  PAUSE,
-  MOORING,
-  PARALLELTOF,
-  PARALLELGYRO,
-  PARALLELFORWARD,
-  FORWARDDISTANCE,
-  ROTATE,
-  ARUCO
-};
-
-struct SensorData {
-  uint16_t tof1 = 0;
-  uint16_t tof2 = 0;
-  uint16_t tof3 = 0;
-  int8_t tofAngle = 0;
-  float gyro = 0;
-  float gyroDegrees = 0;
-};
-
-struct MotorData {
-  int16_t motorL = 0;
-  int16_t motorR = 0;
-  int16_t motorS = 0;
-};
 
 void setup() {
   Serial.begin(115200);
@@ -34,27 +9,29 @@ void setup() {
   gyroInit();
   tofInit(); 
   motorInit();
-  // sdInit();
 }
 
 void loop() {
+  static unsigned int dt = 0;
   static unsigned int time = millis();
+  
+  static int lastError = 0;
   static unsigned int lastWriteCycleTime = 0;
   static unsigned int lastFastReadCycleTime = 0;
   static unsigned int lastSlowReadCycleTime = 0;
 
   static enum State state = PAUSE;
   static struct SensorData sensors;
-  static struct MotorData motors;
+  static struct OutputData output;
   
   if(analogRead(SAFETY_AMPMETER) > SAFETY_AMP_CONSTANT){
-    safety();
+    safetyAmps();
   }
 
   if (time - lastWriteCycleTime > CYCLE_TIME_WRITE) {
-    motorL(motors.motorL);
-    motorR(motors.motorR);
-    motorS(motors.motorS);
+    motorL(output.motorL);
+    motorR(output.motorR);
+    motorS(output.motorS);
     lastWriteCycleTime = time;
   }
 
@@ -70,30 +47,43 @@ void loop() {
 
   if (time - lastSlowReadCycleTime > CYCLE_TIME_READ_SLOW) {
     // TODO: read slow sensors
-    Serial.println(sensors.tof1);
     lastSlowReadCycleTime = time;
   }
 
   switch (state) {
     case PAUSE:
       motorBlowerOff();
-      motors.motorL = 0;
-      motors.motorR = 0;
-      motors.motorS = 0;
+      output.motorL = 0;
+      output.motorR = 0;
+      output.motorS = 0;
       break;
     case MOORING:
+      motorBlowerOn();
+      output = mooring(dt, sensors);
       break;
     case PARALLELTOF:
+      motorBlowerOn();
+      output = parallelTof(dt, sensors);
       break;
     case PARALLELGYRO:
+      motorBlowerOn();
+      output = parallelGyro(dt, sensors);
       break;
     case PARALLELFORWARD:
+      motorBlowerOn();
+      output = parallelForward(dt, sensors);
       break;
     case FORWARDDISTANCE:
+      motorBlowerOn();
+      output = forwardDistance(dt, sensors);
       break;
     case ROTATE:
+      motorBlowerOn();
+      output = rotate(dt, sensors);
       break;
     case ARUCO:
+      motorBlowerOn();
+      output = aruco(dt, sensors);
       break;
     default:
       Serial.println("Error 0: got to default state, that should not be possible");
@@ -101,4 +91,6 @@ void loop() {
       while (1);
   }
 
+  lastError = output.e;
+  dt = millis() - time;
 }

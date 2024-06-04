@@ -1,6 +1,4 @@
-#include <HardwareSerial.h>
-
-HardwareSerial raspberrySerial(RASPBERRY_SERIAL);
+#include "config.h"
 
 struct PositionData {
   float X;
@@ -11,22 +9,16 @@ struct PositionData {
   float C;
 };
 
-PositionData prevData = {0, 0, 0, 0, 0, 0};
-bool isConnected = false;
-
 void initRaspberry() {
-  raspberrySerial.begin(115200, SERIAL_8N1, RASPBERRY_RX, RASPBERRY_TX);
+  Serial2.begin(115200);
 
-  raspberrySerial.println("knock knock!");
+  Serial2.println("knock knock!");
 
   unsigned long startMillis = millis();
   while (millis() - startMillis < RASPBERRY_TIMEOUT) {
-    if (raspberrySerial.available()) {
-      String response = raspberrySerial.readStringUntil('\n');
-      if (response == "whos there?") {
-        Serial.println("Error 6: Failed to init raspberry");
-        displayNumber(6);
-      }
+    if (Serial2.available()) {
+      String response = Serial2.readStringUntil('\n');
+      if (response == "whos there?") return;
     }
   }
   Serial.println("Error 6: Failed to init raspberry");

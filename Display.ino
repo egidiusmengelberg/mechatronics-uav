@@ -1,18 +1,27 @@
 #include "config.h"
 
-const int segment_array[8] = {DISPLAY_SEGMENT_A, DISPLAY_SEGMENT_B, DISPLAY_SEGMENT_C, DISPLAY_SEGMENT_D, DISPLAY_SEGMENT_E, DISPLAY_SEGMENT_F, DISPLAY_SEGMENT_G, DISPLAY_SEGMENT_DOT};
+const uint8_t segment_array[8] = {
+    DISPLAY_SEGMENT_A, 
+    DISPLAY_SEGMENT_B, 
+    DISPLAY_SEGMENT_C, 
+    DISPLAY_SEGMENT_D, 
+    DISPLAY_SEGMENT_E, 
+    DISPLAY_SEGMENT_F, 
+    DISPLAY_SEGMENT_G, 
+    DISPLAY_SEGMENT_DOT
+};
 
 void displayInit() {
-    pinMode(DISPLAY_SUPPLY_1, OUTPUT); digitalWrite(DISPLAY_SUPPLY_1, HIGH);
-    pinMode(DISPLAY_SUPPLY_2, OUTPUT); digitalWrite(DISPLAY_SUPPLY_2, HIGH);
-    pinMode(DISPLAY_SEGMENT_A, OUTPUT); digitalWrite(DISPLAY_SEGMENT_A, HIGH);
-    pinMode(DISPLAY_SEGMENT_B, OUTPUT); digitalWrite(DISPLAY_SEGMENT_B, HIGH);
-    pinMode(DISPLAY_SEGMENT_C, OUTPUT); digitalWrite(DISPLAY_SEGMENT_C, HIGH);
-    pinMode(DISPLAY_SEGMENT_D, OUTPUT); digitalWrite(DISPLAY_SEGMENT_D, HIGH);
-    pinMode(DISPLAY_SEGMENT_E, OUTPUT); digitalWrite(DISPLAY_SEGMENT_E, HIGH);
-    pinMode(DISPLAY_SEGMENT_F, OUTPUT); digitalWrite(DISPLAY_SEGMENT_F, HIGH);
-    pinMode(DISPLAY_SEGMENT_G, OUTPUT); digitalWrite(DISPLAY_SEGMENT_G, HIGH);
-    pinMode(DISPLAY_SEGMENT_DOT, OUTPUT); digitalWrite(DISPLAY_SEGMENT_DOT, HIGH);
+    pinMode(DISPLAY_SUPPLY_1, OUTPUT);      digitalWrite(DISPLAY_SUPPLY_1, HIGH);
+    pinMode(DISPLAY_SUPPLY_2, OUTPUT);      digitalWrite(DISPLAY_SUPPLY_2, HIGH);
+    pinMode(DISPLAY_SEGMENT_A, OUTPUT);     digitalWrite(DISPLAY_SEGMENT_A, HIGH);
+    pinMode(DISPLAY_SEGMENT_B, OUTPUT);     digitalWrite(DISPLAY_SEGMENT_B, HIGH);
+    pinMode(DISPLAY_SEGMENT_C, OUTPUT);     digitalWrite(DISPLAY_SEGMENT_C, HIGH);
+    pinMode(DISPLAY_SEGMENT_D, OUTPUT);     digitalWrite(DISPLAY_SEGMENT_D, HIGH);
+    pinMode(DISPLAY_SEGMENT_E, OUTPUT);     digitalWrite(DISPLAY_SEGMENT_E, HIGH);
+    pinMode(DISPLAY_SEGMENT_F, OUTPUT);     digitalWrite(DISPLAY_SEGMENT_F, HIGH);
+    pinMode(DISPLAY_SEGMENT_G, OUTPUT);     digitalWrite(DISPLAY_SEGMENT_G, HIGH);
+    pinMode(DISPLAY_SEGMENT_DOT, OUTPUT);   digitalWrite(DISPLAY_SEGMENT_DOT, HIGH);
 }
 
 void displayDot(bool state){
@@ -62,7 +71,7 @@ void displaySetAllSegments(bool state){
     }
 }
 
-void displaySetSegments(bool s1, bool s2, bool s3, bool s4, bool s5, bool s6, bool s7){ //neemt lijst van 8 bools en
+void displaySetSegments(bool s1, bool s2, bool s3, bool s4, bool s5, bool s6, bool s7) {
   digitalWrite(segment_array[0], !s1);
   digitalWrite(segment_array[1], !s2);
   digitalWrite(segment_array[2], !s3);

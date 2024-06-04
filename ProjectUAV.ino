@@ -26,19 +26,10 @@ struct MotorData {
   int16_t motorS = 0;
 };
 
-int time = 0;
-int lastWriteCycleTime = 0;
-int lastFastReadCycleTime = 0;
-int lastSlowReadCycleTime = 0;
-
-enum State state = PAUSE;
-struct SensorData sensors;
-struct MotorData motors;
-
 void setup() {
   Serial.begin(115200);
   
-  emergencyInit();
+  safetyInit();
   displayInit();
   gyroInit();
   tofInit(); 
@@ -47,10 +38,17 @@ void setup() {
 }
 
 void loop() {
-  time = millis();
+  static unsigned int time = millis();
+  static unsigned int lastWriteCycleTime = 0;
+  static unsigned int lastFastReadCycleTime = 0;
+  static unsigned int lastSlowReadCycleTime = 0;
 
+  static enum State state = PAUSE;
+  static struct SensorData sensors;
+  static struct MotorData motors;
+  
   if(analogRead(SAFETY_AMPMETER) > SAFETY_AMP_CONSTANT){
-    emergency();
+    safety();
   }
 
   if (time - lastWriteCycleTime > CYCLE_TIME_WRITE) {
@@ -100,7 +98,7 @@ void loop() {
     default:
       Serial.println("Error 0: got to default state, that should not be possible");
       displayNumber(0);
-      while (1) {}
+      while (1);
   }
 
 }

@@ -1,8 +1,6 @@
 #include <HardwareSerial.h>
 
-HardwareSerial mySerial(2);
-
-const u_int8_t timeout = 1000;
+HardwareSerial raspberrySerial(RASPBERRY_SERIAL);
 
 struct PositionData {
   float X;
@@ -16,19 +14,23 @@ struct PositionData {
 PositionData prevData = {0, 0, 0, 0, 0, 0};
 bool isConnected = false;
 
-bool initSerialConnection() {
-  mySerial.println("knock knock!");
+void initRaspberry() {
+  raspberrySerial.begin(115200, SERIAL_8N1, RASPBERRY_RX, RASPBERRY_TX);
+
+  raspberrySerial.println("knock knock!");
 
   unsigned long startMillis = millis();
-  while (millis() - startMillis < timeout) {
-    if (mySerial.available()) {
-      String response = mySerial.readStringUntil('\n');
+  while (millis() - startMillis < RASPBERRY_TIMEOUT) {
+    if (raspberrySerial.available()) {
+      String response = raspberrySerial.readStringUntil('\n');
       if (response == "whos there?") {
-        return true;
+        Serial.println("Error 6: Failed to init raspberry");
+        displayNumber(6);
       }
     }
   }
-  return false;
+  Serial.println("Error 6: Failed to init raspberry");
+  displayNumber(6);
 }
 
 PositionData splitString(String data) {
@@ -60,20 +62,20 @@ PositionData splitString(String data) {
   return posData;
 }
 
-PositionData askPosition() {
-  while (mySerial.available()) {
-    mySerial.read();
+PositionData raspberryPosition() {
+  while (raspberrySerial.available()) {
+    raspberrySerial.read();
   }
 
-  mySerial.println("where am I?");
+  raspberrySerial.println("where am I?");
 
   unsigned long startMillis = millis();
   bool responseReceived = false;
   PositionData posData;
 
   while (millis() - startMillis < timeout) {
-    if (mySerial.available()) {
-      String positionData = mySerial.readStringUntil('\n');
+    if (raspberrySerial.available()) {
+      String positionData = raspberrySerial.readStringUntil('\n');
       responseReceived = true;
 
       posData = splitString(positionData);
@@ -88,35 +90,4 @@ PositionData askPosition() {
   }
 
   return posData;
-}
-
-void setup() {
-  Serial.begin(115200);
-  mySerial.begin(115200, SERIAL_8N1, 16, 17);
-
-  isConnected = initSerialConnection();
-  if (isConnected) {
-    Serial.println("Great success!!");
-  } else {
-    Serial.println("Boohoo :(");
-  }
-}
-
-void loop() {
-  isConnected = initSerialConnection();
-
-  if (isConnected) {
-    PositionData posData = askPosition();
-
-    Serial.print("X: "); Serial.print(posData.X);
-    Serial.print(" Y: "); Serial.print(posData.Y);
-    Serial.print(" Z: "); Serial.print(posData.Z);
-    Serial.print(" A: "); Serial.print(posData.A);
-    Serial.print(" B: "); Serial.print(posData.B);
-    Serial.print(" C: "); Serial.println(posData.C);
-  } else {
-    Serial.println("Lost ya");
-  }
-
-  delay(10);
 }

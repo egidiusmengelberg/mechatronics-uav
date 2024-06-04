@@ -5,7 +5,7 @@ void sdInit() {
   if (!SD.begin(SD_CS)) {
     Serial.println("Error 4: Failed to boot sd");
     displayNumber(4);
-    while (1) {}
+    while (1);
   }
 }
 

@@ -9,7 +9,7 @@ void gyroInit() {
   if(!gyro.init()){
     Serial.println("Error 3: Failed to boot gyro");
     displayNumber(3);
-    while (1) {}
+    while (1);
   }
 
   gyro.autoOffsets();

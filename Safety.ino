@@ -1,4 +1,4 @@
-void emergencyInit() {
+void safetyInit() {
   pinMode(SAFETY_AMPMETER, INPUT);
   pinMode(SAFETY_DISCHARGE, INPUT_PULLUP);
   
@@ -10,7 +10,7 @@ void emergencyInit() {
   delay(300);
 }
 
-void emergency() {
+void safety() {
   digitalWrite(RELAY_ELEC, LOW);
   motorBlowerOff();
   Serial.println("Error 1: Amperage cutoff");

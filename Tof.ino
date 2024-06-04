@@ -42,8 +42,8 @@ void tofInit() {
 
 uint16_t tof1Read() {
   VL53L0X_RangingMeasurementData_t measurement;
-  tof1.rangingTest(&measurement, false);
-  if(measurement.RangeStatus != 4) {     // if not out of range
+  tof1.getSingleRangingMeasurement(&measurement, false);
+  if(measurement.RangeStatus != 4) {
     return measurement.RangeMilliMeter;
   }
   return 0;
@@ -51,8 +51,8 @@ uint16_t tof1Read() {
 
 uint16_t tof2Read() {
   VL53L0X_RangingMeasurementData_t measurement;
-  tof2.rangingTest(&measurement, false);
-  if(measurement.RangeStatus != 4) {     // if not out of range
+  tof2.getSingleRangingMeasurement(&measurement, false);
+  if(measurement.RangeStatus != 4) {
     return measurement.RangeMilliMeter;
   }
   return 0;
@@ -60,8 +60,8 @@ uint16_t tof2Read() {
 
 uint16_t tof3Read() {
   VL53L0X_RangingMeasurementData_t measurement;
-  tof3.rangingTest(&measurement, false);
-  if(measurement.RangeStatus != 4) {     // if not out of range
+  tof3.getSingleRangingMeasurement(&measurement, false);
+  if(measurement.RangeStatus != 4) {
     return measurement.RangeMilliMeter;
   }
   return 0;
@@ -70,9 +70,8 @@ uint16_t tof3Read() {
 int8_t tofAngleRead() {
   uint16_t d1 = tof1Read();
   uint16_t d2 = tof2Read();
-  // TODO: replace with cordic algorithm
   if (d1 > d2) {
-    return -round( atan2 (d1 - d2, TOF_DISTANCE_BETWEEN_SENSORS) * 180/3.14159265 );
+    return -round(d1 - d2 / TOF_DISTANCE_BETWEEN_SENSORS);
   }
-  return round( atan2 (d2 - d1, TOF_DISTANCE_BETWEEN_SENSORS) * 180/3.14159265 );
+  return round(d2 - d1 / TOF_DISTANCE_BETWEEN_SENSORS);
 }

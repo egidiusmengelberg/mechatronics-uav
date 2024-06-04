@@ -43,7 +43,7 @@ void setup() {
   gyroInit();
   tofInit(); 
   motorInit();
-  sdInit();
+  // sdInit();
 }
 
 void loop() {
@@ -72,6 +72,7 @@ void loop() {
 
   if (time - lastSlowReadCycleTime > CYCLE_TIME_READ_SLOW) {
     // TODO: read slow sensors
+    Serial.println(sensors.tof1);
     lastSlowReadCycleTime = time;
   }
 

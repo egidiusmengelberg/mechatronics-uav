@@ -16,8 +16,9 @@ void motorInit() {
   digitalWrite(MOTOR_SIDE_2, LOW);
   analogWrite(MOTOR_SIDE_PWM, 0);
 
-  analogWrite(MOTOR_L_1, 0);
-  analogWrite(MOTOR_L_2, 0);
+  //Turn all motors off
+  analogWrite(MOTOR_L_1, 255);
+  analogWrite(MOTOR_L_2, 255);
   analogWrite(MOTOR_R_1, 0);
   analogWrite(MOTOR_R_2, 0);
 }
@@ -25,23 +26,25 @@ void motorInit() {
 void motorL(int16_t speed) {
   if (speed > 0) {
     analogWrite(MOTOR_L_1, 0);
-    analogWrite(MOTOR_L_2, abs(speed));
+    analogWrite(MOTOR_L_2, 255-speed);
   } else if (speed < 0) {
-    analogWrite(MOTOR_L_1, abs(speed));
+    analogWrite(MOTOR_L_1, 255+speed);
     analogWrite(MOTOR_L_2, 0);
   } else {
-    analogWrite(MOTOR_L_1, 0);
-    analogWrite(MOTOR_L_2, 0);
+    analogWrite(MOTOR_L_1, 255);
+    analogWrite(MOTOR_L_2, 255);
   }
 }
 
 void motorR(int16_t speed) {
-  if (speed > 0) {
+  if (speed < 0) {
     analogWrite(MOTOR_R_1, 0);
     analogWrite(MOTOR_R_2, abs(speed));
-  } else if (speed < 0) {
+
+  } else if (speed > 0) {
     analogWrite(MOTOR_R_1, abs(speed));
     analogWrite(MOTOR_R_2, 0);
+    
   } else {
     analogWrite(MOTOR_R_1, 0);
     analogWrite(MOTOR_R_2, 0);

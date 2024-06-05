@@ -13,7 +13,7 @@ struct SensorData {
   uint16_t tof1 = 0;
   uint16_t tof2 = 0;
   uint16_t tof3 = 0;
-  int8_t tofAngle = 0;
+  float tofAngle = 0;
   float gyro = 0;
   float gyroDegrees = 0;
 };

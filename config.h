@@ -3,7 +3,7 @@
 
 // CYCLE TIMES
 #define CYCLE_TIME_WRITE 50       // ms
-#define CYCLE_TIME_READ_FAST 100   // ms
+#define CYCLE_TIME_READ_FAST 50   // ms
 #define CYCLE_TIME_READ_SLOW 200  // ms
 
 // SAFETY
@@ -34,7 +34,12 @@
 #define TOF_1_ADDR 0x50
 #define TOF_2_ADDR 0x51
 #define TOF_3_ADDR 0x52
-#define TOF_DISTANCE_BETWEEN_SENSORS 141 // mm
+#define TOF_DISTANCE_BETWEEN_SENSORS 290 // mm
+
+// GYRO
+#define GYRO_SENSITIVITY 1.0
+#define GYRO_CALIBRATION_READINGS 300
+
 
 // SDCARD
 #define SD_DI 50

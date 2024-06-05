@@ -1,6 +1,18 @@
 #include "Types.h"
 #include "config.h"
 
+unsigned int dt = 0;
+unsigned int time = 0;
+
+int lastError = 0;
+unsigned int lastWriteCycleTime = 0;
+unsigned int lastFastReadCycleTime = 0;
+unsigned int lastSlowReadCycleTime = 0;
+
+enum State state = PAUSE;
+struct SensorData sensors;
+struct OutputData output;
+
 void setup() {
   Serial.begin(115200);
   
@@ -9,21 +21,15 @@ void setup() {
   gyroInit();
   tofInit(); 
   motorInit();
+
+  gyroCalibrate();
+
+  Serial.println("UAV Booted");
 }
 
 void loop() {
-  static unsigned int dt = 0;
-  static unsigned int time = millis();
-  
-  static int lastError = 0;
-  static unsigned int lastWriteCycleTime = 0;
-  static unsigned int lastFastReadCycleTime = 0;
-  static unsigned int lastSlowReadCycleTime = 0;
+  time = millis();
 
-  static enum State state = PAUSE;
-  static struct SensorData sensors;
-  static struct OutputData output;
-  
   if(analogRead(SAFETY_AMPMETER) > SAFETY_AMP_CONSTANT){
     safetyAmps();
   }
@@ -37,7 +43,7 @@ void loop() {
 
   if (time - lastFastReadCycleTime > CYCLE_TIME_READ_FAST) {
     sensors.gyro = gyroRead();
-    sensors.gyroDegrees = sensors.gyroDegrees + (sensors.gyro / (time - lastFastReadCycleTime));
+    sensors.gyroDegrees = sensors.gyroDegrees + (sensors.gyro * (time - lastFastReadCycleTime) / 1000);
     sensors.tof1 = tof1Read();
     sensors.tof2 = tof2Read();
     sensors.tof3 = tof3Read();
@@ -47,6 +53,11 @@ void loop() {
 
   if (time - lastSlowReadCycleTime > CYCLE_TIME_READ_SLOW) {
     // TODO: read slow sensors
+    Serial.print(sensors.tof1);
+    Serial.print('\t');
+    Serial.print(sensors.tof2);
+    Serial.print('\t');
+    Serial.println(sensors.tofAngle);
     lastSlowReadCycleTime = time;
   }
 

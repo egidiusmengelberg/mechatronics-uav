@@ -67,11 +67,15 @@ uint16_t tof3Read() {
   return 0;
 }
 
-int8_t tofAngleRead() {
-  uint16_t d1 = tof1Read();
-  uint16_t d2 = tof2Read();
+float tofAngleRead() {
+  float d1 = tof1Read();
+  float d2 = tof2Read();
   if (d1 > d2) {
-    return -round(d1 - d2 / TOF_DISTANCE_BETWEEN_SENSORS);
+    // return ((d1 - d2) / TOF_DISTANCE_BETWEEN_SENSORS) * -60.2831853;
+    return d1 - d2;
+  } else {
+    // return ((d2 - d1) / TOF_DISTANCE_BETWEEN_SENSORS) * 60.2831853;
+    return d2 - d1;
   }
-  return round(d2 - d1 / TOF_DISTANCE_BETWEEN_SENSORS);
+  
 }

@@ -3,6 +3,8 @@
 
 MPU9250_WE gyro = MPU9250_WE(0x68);
 
+float gyroBiasZ = 0;
+
 void gyroInit() {
   Wire.begin();
   
@@ -23,7 +25,19 @@ void gyroInit() {
   gyro.setMagOpMode(AK8963_CONT_MODE_100HZ);
 }
 
+void gyroCalibrate() {
+  Serial.println('i> Calibrating gyro (3s)');
+  for (int i = 0; i < GYRO_CALIBRATION_READINGS; i++) {
+    xyzFloat gyr = gyro.getGyrValues();
+    gyroBiasZ += gyr.z / GYRO_SENSITIVITY;
+    delay(10);
+  }
+
+  gyroBiasZ /= GYRO_CALIBRATION_READINGS;
+  Serial.println('i> Calibration done');
+}
+
 float gyroRead() {
   xyzFloat gyr = gyro.getGyrValues();
-  return gyr.z;
+  return (gyr.z - gyroBiasZ) * GYRO_SENSITIVITY;
 }

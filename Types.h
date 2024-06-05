@@ -25,6 +25,15 @@ struct OutputData {
   int16_t motorS = 0;
 };
 
+struct ArucoData {
+  float X;
+  float Y;
+  float Z;
+  float A;
+  float B;
+  float C;
+};
+
 struct LookupTable {
   float force;
   int16_t pwm;
